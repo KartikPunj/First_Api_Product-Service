@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpMethod.*;
 
-@Service
+@Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
 
     private RestTemplate restTemplate;
@@ -50,6 +50,11 @@ public class FakeStoreProductService implements ProductService{
 
         assert fakeStoreProductDTO != null;
         return convertFakeStoreProductDtoToProduct(fakeStoreProductDTO);
+    }
+
+    @Override
+    public Product updateSelfProduct(Long id, Product product) {
+        return null;
     }
 
     @Override
@@ -121,37 +126,33 @@ public class FakeStoreProductService implements ProductService{
         return convertFakeStoreProductDtoToProduct(response);
     }
 
-    public Product updateProduct(Long id, Product product) {
+    @Override
+    public boolean deleteSelfProduct(Long id) {
+        return false;
+    }
+
+    public FakeStoreProductDTO updateProduct(Long id, Product product) {
         //update the product in the database using patch method with the help of third party API
         // patch will only update the fields that are passed in the request body and rest fields will remain same
         FakeStoreProductDTO fakeStoreProductDTO = new FakeStoreProductDTO();
-        if(product.getTitle() != null)
+        if(!product.getTitle().isEmpty())
             fakeStoreProductDTO.setTitle(product.getTitle());
         if(product.getPrice() != 0)
             fakeStoreProductDTO.setPrice(product.getPrice());
-        if(product.getDescription() != null)
+        if(!product.getDescription().isEmpty())
             fakeStoreProductDTO.setDescription(product.getDescription());
-        if(product.getImageUrl() != null)
+        if(!product.getImageUrl().isEmpty())
             fakeStoreProductDTO.setImage(product.getImageUrl());
-        if(product.getCategory().getName() != null)
+        if(product!=null && product.getCategory()!=null && product.getCategory().getName().isEmpty())
             fakeStoreProductDTO.setCategory(product.getCategory().getName());
 
         RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreProductDTO, FakeStoreProductDTO.class);
         HttpMessageConverterExtractor<FakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor<>(FakeStoreProductDTO.class, restTemplate.getMessageConverters());
-        FakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products/" + id, PATCH, requestCallback, responseExtractor);
+        FakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products/" + id, PUT, requestCallback, responseExtractor);
 
-        return convertFakeStoreProductDtoToProduct(response);
+        return response;
 
 
-//        FakeStoreProductDTO response = restTemplate.exchange(
-//                    "https://fakestoreapi.com/products/" + id,
-//                    PATCH,
-//                    new HttpEntity<>(fakeStoreProductDTO),
-//                    FakeStoreProductDTO.class
-//
-//            ).getBody();
-//
-//            return convertFakeStoreProductDtoToProduct(response);
 
     }
 

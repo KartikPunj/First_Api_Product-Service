@@ -1,16 +1,22 @@
 package com.scaler.firstapi.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-public class Product {
+@Entity
+public class Product extends BaseModel {
 
-    private long id;
     private String title;
-    private double price;
+    private Double price;
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private Category category;
     private String description;
     private String imageUrl;
+    private Integer no_of_sales;
 }

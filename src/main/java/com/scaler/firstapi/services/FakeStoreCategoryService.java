@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-@Service
+@Service("FakeStoreCategoryService")
 public class FakeStoreCategoryService implements CategoryService{
 
     private RestTemplate restTemplate;
@@ -46,6 +46,21 @@ public class FakeStoreCategoryService implements CategoryService{
                 list.add(s);
             }
         return list;
+    }
+
+    @Override
+    public List<Category> getAllCategoriesSelf() {
+        return null;
+    }
+
+    @Override
+    public List<Product> getAllProductsInCategorySelf(String categoryName) {
+        return null;
+    }
+
+    @Override
+    public Category addNewCategory(Category category) {
+        return null;
     }
 
 }

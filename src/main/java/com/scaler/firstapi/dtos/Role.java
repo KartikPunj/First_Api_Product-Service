@@ -1,12 +1,13 @@
-package com.ecommerce.user_service_self.models;
+package com.scaler.firstapi.dtos;
 
+import com.scaler.firstapi.models.BaseModel;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-public class Role extends BaseModel{
+
+public class Role {
     private String  name;
 }
